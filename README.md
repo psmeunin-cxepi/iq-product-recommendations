@@ -242,7 +242,19 @@ Use consistent, normalized keys:
 
 ## Next Steps
 
-Future enhancements may include:
+### Immediate Enhancements
 
 - Cypher "candidate generation" query templates that return consistent result shapes for agent ranking
 - Compact LLM ontology context blocks (node/relationship descriptions) for injection into Cypher-planner/reasoning agents
+
+### Future: Integration with Topology & Telemetry
+
+**Value Proposition:** Enhance recommendations by incorporating real-world operational data alongside static product specifications.
+
+**Key Benefits:**
+- **Operational Context**: Recommendations consider actual device usage patterns (power consumption, utilization) rather than just manufacturer specifications
+- **Site-Aware Recommendations**: Factor in location-specific constraints and performance requirements
+- **Capacity Planning**: Identify replacement opportunities based on observed headroom and growth patterns
+- **Cost Optimization**: Recommend right-sized replacements that avoid over-provisioning while meeting actual performance needs
+
+**Integration Approach:** Maintain separate domain graphs (product catalog vs. operational data) connected through a lightweight semantic hub layer that maps devices to products and provides aggregated telemetry metrics for enhanced decision-making. Operational data is derived from Marvin.
