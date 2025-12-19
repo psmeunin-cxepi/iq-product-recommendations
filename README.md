@@ -258,3 +258,20 @@ Use consistent, normalized keys:
 - **Cost Optimization**: Recommend right-sized replacements that avoid over-provisioning while meeting actual performance needs
 
 **Integration Approach:** Maintain separate domain graphs (product catalog vs. operational data) connected through a lightweight semantic hub layer that maps devices to products and provides aggregated telemetry metrics for enhanced decision-making. Operational data is derived from Marvin.
+
+### Future: RAG Integration with Cisco Documentation
+
+**Value Proposition:** Enhance recommendation quality by combining structured knowledge graph data with authoritative Cisco documentation for comprehensive, citation-backed guidance.
+
+**Key Benefits:**
+- **Enhanced Rationale**: Provide doc-backed reasoning beyond structured data (migration paths, compatibility notes, thermal considerations)
+- **Licensing Nuances**: Access detailed licensing guidance often missing from structured data
+- **Migration Insights**: Surface documented caveats, prerequisites, and best practices from official sources
+- **Authoritative Citations**: Reference specific datasheets, ordering guides, and lifecycle bulletins
+
+**Architecture Pattern:** KG-first approach where the knowledge graph handles entity resolution and candidate generation, then RAG retrieves product-specific documentation to enrich recommendations with authoritative context and detailed guidance.
+
+**Key Mitigations:**
+- **Precision Retrieval**: Filter by product_id/family_id + document type to avoid cross-contamination from similar SKUs
+- **Source Authority**: Establish clear precedence rules (e.g., EoL bulletins override, prefer latest publication dates)
+- **Confidence Transparency**: Distinguish between "official" replacements (explicitly documented) and "inferred" recommendations with clear confidence indicators
