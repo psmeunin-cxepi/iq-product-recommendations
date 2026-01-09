@@ -192,3 +192,8 @@ The system injects Energy Info with a prompt wrapper saying "IGNORE ALL OTHER SP
 The Weaviate path relies on `ai_framework_sdk`, which is an external library.
 -   **Risk**: If the SDK changes its API or the remote Weaviate cluster is unreachable, the RAG pipeline fails completely.
 -   **Rec**: Implement a fallback mechanism to Local FAISS if the remote Weaviate connection fails during startup.
+
+## References
+- https://docs.langchain.com/oss/python/integrations/vectorstores/faiss
+- https://reference.langchain.com/v0.3/python/core/embeddings/langchain_core.embeddings.fake.FakeEmbeddings.html
+- https://reference.langchain.com/v0.3/python/community/vectorstores/langchain_community.vectorstores.faiss.FAISS.html
