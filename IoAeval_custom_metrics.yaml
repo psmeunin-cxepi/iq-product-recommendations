@@ -1,0 +1,302 @@
+custom_metrics:
+- gte: 1
+  lte: 5
+  name: correctness
+  prompt: 'EVALUATION GOAL:
+
+    Your objective is to conduct a comprehensive and critical assessment of an AI
+    product recommendation assistant''s response quality. This evaluation determines
+    whether the assistant provides reliable, technically accurate information that
+    enables sales engineers and account teams to make informed hardware upgrade recommendations
+    for Cisco Catalyst, Nexus, and UCS products.
+
+
+    EVALUATION CONTEXT:
+
+    You are evaluating responses from an AI assistant designed for Cisco product specialists
+    handling hardware upgrade recommendations. The assistant should provide accurate
+    technical specifications, meaningful upgrade paths, energy savings calculations,
+    and feature comparisons. Target users include sales engineers, solution architects,
+    and account managers with varying technical backgrounds who need accurate product
+    data for customer conversations.
+
+
+    QUERY TYPE CLASSIFICATION:
+
+    The agent handles four main query types. Score appropriately based on query type:
+
+    1. RECOMMENDATION: Upgrade suggestion from legacy to modern product - Must identify
+    correct source product and suitable target replacement - Should highlight key
+    improvements (performance, features, security) - References to official documentation
+    expected
+
+    2. BENEFIT_ANALYSIS: Detailed comparison between source and target products -
+    Must include capacity analysis (switching capacity, forwarding rate) - Energy
+    savings calculations with power consumption data - Multiplicative factor for consolidation
+    scenarios - Clear recommendation with justification
+
+    3. PRODUCT_INFO: Technical specifications for a specific product - Accurate port
+    configurations, switching capacity, power specs - Clear tabular presentation when
+    appropriate - Relevant features and capabilities
+
+    4. IRRELEVANT: Off-topic queries outside product recommendation scope - Should
+    politely redirect to supported capabilities - Must NOT incorrectly classify valid
+    product queries as irrelevant
+
+
+    STEP-BY-STEP EVALUATION PROCESS:
+
+    STEP 1: QUERY TYPE IDENTIFICATION
+
+    First, identify the query type and expected response format. Check if the query
+    was correctly classified (valid product queries should NOT be marked as irrelevant).
+
+
+    STEP 2: TECHNICAL ACCURACY ASSESSMENT
+
+    Verify all technical specifications against known Cisco product data: - Switching
+    capacity values (Gbps) - Forwarding rates (Mpps) - Power consumption figures (Watts)
+    - Port configurations and PoE capabilities - Product IDs (PIDs) and model numbers
+
+
+    STEP 3: RESPONSE COMPLETENESS
+
+    Assess whether the response includes all expected sections for the query type
+    and provides actionable information.
+
+
+    STEP 4: HOLISTIC SCORING
+
+    Synthesize findings to assign a final score with justification.
+
+
+    EVALUATION CRITERIA:
+
+
+    CRITERION 1: TECHNICAL ACCURACY (Weight: 35%)
+
+    Definition: Correctness of product specifications and technical data
+
+    Key Elements:
+
+    - Switching capacity and forwarding rate values are accurate
+
+    - Power consumption figures match official specifications
+
+    - Product IDs (source and target) are valid Cisco products
+
+    - Energy savings calculations are mathematically correct
+
+    - Port configurations and capabilities are accurately described
+
+
+    CRITERION 2: RECOMMENDATION QUALITY (Weight: 25%)
+
+    Definition: Appropriateness and justification of upgrade recommendations
+
+    Key Elements:
+
+    - Target product is a valid, current replacement for source product
+
+    - Key improvements are clearly articulated (performance, security, features)
+
+    - Consolidation scenarios properly handled with multiplicative factors
+
+    - Trade-offs are acknowledged when applicable
+
+    - Recommendation aligns with customer use case
+
+
+    CRITERION 3: RESPONSE STRUCTURE & CLARITY (Weight: 20%)
+
+    Definition: Organization and presentation of technical information
+
+    Key Elements:
+
+    - Consistent section structure (Capacity, Energy, Features, Recommendation)
+
+    - Tables used appropriately for specifications
+
+    - Clear formatting with markdown headers and bullet points
+
+    - References to source documentation included
+
+    - Professional, technical tone maintained
+
+
+    CRITERION 4: QUERY HANDLING (Weight: 20%)
+
+    Definition: Correct interpretation and complete response to user query
+
+    Key Elements:
+
+    - Query type correctly classified (not marking valid queries as irrelevant)
+
+    - Response directly addresses the specific product(s) mentioned
+
+    - All relevant aspects of the query are covered
+
+    - Appropriate level of detail for the query type
+
+    - Graceful handling of ambiguous or incomplete queries
+
+
+    MISCLASSIFICATION DETECTION:
+
+    A query is INCORRECTLY marked as irrelevant if ALL of these are true:
+
+    1. The query mentions a specific Cisco product ID (e.g., C9200-48PL, WS-C2960S,
+    C9300-48P, N9K-C93180YC) or asks about product specifications
+
+    2. The response is a generic redirect message like "I''m a specialized assistant
+    for Cisco Catalyst, Nexus, and UCS..." instead of actual product information
+
+    3. The query is asking for valid information (specs, capacity, ports, power, etc.)
+
+    Example of misclassification: - Query: "what is the switching capacity of C9200-48PL"
+    - Response: "I''m a specialized assistant... I can help you with Product Specifications..."
+    - This is WRONG because the query asks for specs of a valid Cisco product but
+    gets a redirect instead of the actual switching capacity value
+
+
+    SCORING INSTRUCTIONS:
+
+    Rate the overall response quality on a scale of 1-5:
+
+    - Consider all four criteria with their respective weights
+
+    - Provide specific justification referencing technical data from the response
+
+    - Identify which criterion most influenced your score
+
+    - Note any technical errors or misclassifications
+
+
+    EDGE CASE HANDLING:
+
+    - If valid product query is marked as irrelevant: Score cannot exceed 2
+
+    - If technical specifications are significantly incorrect: Score cannot exceed
+    2
+
+    - If response fails to identify correct target product: Score cannot exceed 3
+
+    - If energy calculations have mathematical errors: Reduce score by 1 point
+
+    - If response exceeds expectations with comprehensive analysis: Consider score
+    of 5
+
+
+    JUSTIFICATION REQUIREMENT:
+
+    For your assigned score, provide:
+
+    1. Query type and whether correctly handled
+
+    2. Technical accuracy assessment with specific data points
+
+    3. Strengths and weaknesses of the response
+
+    4. Specific examples from the response supporting your assessment
+
+
+    INPUT DATA FOR EVALUATION:
+
+    User Query: <query>{query}</query>
+
+    AI Assistant Response: <response>{response}</response>
+
+    Expected Target Response: <ground_truth>{ground_truth}</ground_truth>
+
+
+    Provide your evaluation score (1-5) and detailed justification following the structure
+    outlined above.
+
+    '
+  scoring_rubric:
+    '1': Critical Failure - Contains significant technical errors (wrong specs, incorrect
+      product IDs), misclassifies valid product queries as irrelevant, or provides
+      information that could lead to incorrect upgrade decisions. Technical data is
+      unreliable.
+    '2': Poor Quality - Notable technical inaccuracies, wrong target product recommendation,
+      or major calculation errors. Response addresses query but with substantial deficiencies
+      requiring verification against official specs.
+    '3': Acceptable Standard - Generally accurate technical data with minor inconsistencies.
+      Provides adequate upgrade recommendation but lacks comprehensive feature comparison
+      or has incomplete energy analysis.
+    '4': High Quality - Accurate technical specifications, appropriate target product
+      recommendation, correct calculations, and clear presentation. Minor areas for
+      improvement but response effectively supports upgrade decision-making.
+    '5': Exceptional Excellence - Highly accurate technical data, comprehensive feature
+      comparison, correct energy calculations with methodology shown, clear documentation
+      references, and insights that exceed expectations. Demonstrates deep product
+      knowledge.
+- gte: 1
+  lte: 5
+  name: retrieval_quality
+  prompt: "EVALUATION GOAL:\nAssess the quality of document retrieval by comparing\
+    \ the retrieved chunks against the AI assistant's response. Evaluate whether the\
+    \ retriever fetched relevant, accurate documentation and whether the response\
+    \ properly utilized that information.\n\nEVALUATION CONTEXT:\nThe Product Recommendation\
+    \ assistant uses a FAISS vector store containing Cisco product datasheets. The\
+    \ system retrieves document chunks for source products (legacy) and target products\
+    \ (replacement recommendations). You have access to the actual retrieved chunks\
+    \ to directly evaluate retrieval quality.\n\nINPUT DATA:\nUser Query: <query>{query}</query>\n\
+    Retrieved Document Chunks:\n<retrieved_chunks>{retrieved_chunks}</retrieved_chunks>\n\
+    AI Assistant Response: <response>{response}</response>\n\nSTEP-BY-STEP EVALUATION:\n\
+    \nSTEP 0: DETERMINE IF RETRIEVAL WAS NEEDED\nFirst, analyze the query to determine\
+    \ if document retrieval was necessary:\n- Does the query ask about specific product\
+    \ models, PIDs, or specs? \u2192 Retrieval NEEDED\n- Does the query ask for product\
+    \ comparisons or upgrade recommendations? \u2192 Retrieval NEEDED\n- Is this a\
+    \ general question about technology concepts, limitations, or features without\
+    \ specific products? \u2192 Retrieval MAY NOT BE NEEDED\n- Is this a conversational\
+    \ follow-up using prior context? \u2192 Retrieval MAY NOT BE NEEDED\nIf retrieval\
+    \ was NOT needed and no chunks were retrieved, this is CORRECT behavior - score\
+    \ 5.\n\nSTEP 1: RETRIEVAL RELEVANCE (if chunks were retrieved or should have been)\n\
+    Examine the retrieved chunks:\n- Are the chunks relevant to the user's query?\n\
+    - Do they contain information about the correct products (source and/or target)?\n\
+    - Are the chunks from authoritative sources (datasheets vs. generic content)?\n\
+    \nSTEP 2: RETRIEVAL COMPLETENESS\nEvaluate what was retrieved:\n- For source products:\
+    \ Were relevant specs/EOL info retrieved?\n- For target products: Were replacement\
+    \ product datasheets retrieved?\n- Are key sections present (Performance, Specifications,\
+    \ Features)?\n\nSTEP 3: CHUNK QUALITY\nAssess the quality of retrieved content:\n\
+    - Do chunks contain specific technical specifications (Gbps, Mpps, Watts)?\n-\
+    \ Are product IDs (PIDs) present in the chunks?\n- Is there structured tabular\
+    \ data vs. generic marketing text?\n\nSTEP 4: RESPONSE UTILIZATION\nEvaluate how\
+    \ well the response used the retrieved chunks:\n- Does the response accurately\
+    \ cite information from the chunks?\n- Are there hallucinations (claims not supported\
+    \ by retrieved chunks)?\n- Did the response miss important information that WAS\
+    \ in the chunks?\n\nSCORING CRITERIA:\n\nScore 5 - Excellent / Appropriate No-Retrieval:\n\
+    EITHER: Comprehensive retrieval with highly relevant chunks, complete coverage\
+    \ of source and target products with precise specifications, response accurately\
+    \ utilizes all key information.\nOR: Query did not require retrieval (general\
+    \ question, conversational follow-up) and correctly no chunks were retrieved -\
+    \ this is optimal behavior.\n\nScore 4 - Good Retrieval:\nRelevant chunks for\
+    \ both source and target products (where applicable). Contains technical specifications,\
+    \ product IDs, and datasheet-quality content. Minor gaps.\n\nScore 3 - Adequate\
+    \ Retrieval:\nRelevant chunks retrieved but with gaps. Has some technical specs\
+    \ but missing key details (e.g., has target product but no source product info,\
+    \ or vice versa).\n\nScore 2 - Poor Retrieval:\nSome relevant chunks but mostly\
+    \ irrelevant or low-quality content. Missing critical product information. Chunks\
+    \ lack technical specifications.\n\nScore 1 - Retrieval Failure:\nQuery REQUIRED\
+    \ specific product information but no relevant chunks were retrieved, OR chunks\
+    \ are completely irrelevant (wrong products, off-topic content).\nNote: Only score\
+    \ 1 if retrieval WAS needed but failed. If no retrieval was needed, score 5 for\
+    \ appropriate behavior.\n\nJUSTIFICATION REQUIREMENT:\nProvide:\n1. Assessment\
+    \ of whether retrieval was needed for this query (and why)\n2. Summary of what\
+    \ chunks were retrieved (products, sources, content types)\n3. Assessment of chunk\
+    \ relevance to the query\n4. Key specifications found in chunks vs. what's in\
+    \ the response\n5. Any hallucinations or missed information\n6. Score justification\
+    \ based on retrieval appropriateness and quality\n"
+  scoring_rubric:
+    '1': Retrieval Failure - Query required product info but no relevant chunks retrieved,
+      or wrong products/off-topic.
+    '2': Poor Retrieval - Mostly irrelevant chunks. Missing critical product information
+      and technical specs.
+    '3': Adequate Retrieval - Some relevant chunks with gaps. Partial specs, missing
+      source or target coverage.
+    '4': Good Retrieval - Relevant chunks for query products. Contains technical specs
+      and datasheet content with minor gaps.
+    '5': Excellent / Appropriate - Either comprehensive retrieval with precise specs,
+      OR correctly no retrieval for general queries.
+
