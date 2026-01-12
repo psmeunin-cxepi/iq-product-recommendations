@@ -1,0 +1,100 @@
+## Role
+<!--
+What this should contain:
+- Who/what the agent is (short identity).
+- The agent’s primary function in the workflow.
+- Any persona/tone constraints if relevant (keep minimal).
+- A one-liner on what the agent MUST optimize for (e.g., correctness, grounding).
+-->
+
+## Objective
+<!--
+What this should contain:
+- The concrete outcome the agent must produce for the user/workflow.
+- Make it testable (“produce X”, “decide Y”, “return Z in schema”).
+- Avoid implementation details here; keep it about the end goal.
+-->
+
+## Scope
+<!--
+What this should contain:
+- Clear boundaries of what the agent will and will not do.
+- Include “In scope” and “Out of scope” bullets.
+- Mention any explicit exclusions (e.g., “Do not provide pricing”, “Do not troubleshoot beyond EOL status”).
+- Prevents tool/knowledge drift and overreach.
+-->
+
+## Instructions
+<!--
+What this should contain:
+- The step-by-step rules the agent must follow to achieve the objective.
+- Priority order: what to do first, second, third.
+- Grounding rules (how to use RAG/tool outputs vs prior knowledge).
+- Decision rules (how to handle missing info, ambiguity, conflicts).
+- Tool strategy rules (only if needed): when to call tools, in what order, how to react to empty results.
+- Output discipline rules: be concise, list assumptions, avoid speculation, etc.
+- Any “never do X” rules that are critical.
+-->
+
+## Output Format
+<!--
+What this should contain:
+- The exact output structure expected (JSON schema, markdown structure, fields, required keys).
+- Constraints: “JSON only”, “no extra keys”, ordering, max length, etc.
+- If you validate outputs with a parser, include the strict contract here.
+-->
+
+## Examples (optional)
+<!--
+What this should contain:
+- 1–3 small examples that demonstrate:
+  - A correct response in the required format.
+  - A “missing context” response pattern.
+  - A “conflicting sources/uncertain” response pattern (if relevant).
+- Keep examples short and close to real requests.
+-->
+
+## Validation Checklist (optional but recommended)
+<!--
+What this should contain:
+- A short checklist the agent should satisfy before responding, e.g.:
+  - Did I stay within scope?
+  - Are factual claims grounded in provided context/tool results?
+  - Did I follow the required output format exactly?
+  - Did I clearly call out assumptions/unknowns?
+-->
+
+## Special Considerations
+<!--
+What this should contain:
+- Edge cases and domain-specific constraints.
+- Terminology and normalization rules (canonical names, ID formats).
+- Safety/compliance requirements specific to your org/product.
+- Any “do not mention internal implementation” or “don’t expose sensitive info” rules.
+-->
+
+## Runtime Context (injected at execution time; optional)
+<!--
+What this should contain:
+- Only include this section if you inject context into the system prompt.
+- Otherwise, you can omit it and pass context via message history/tool messages.
+- Typical items (use only what your workflow provides):
+  - User request (latest message)
+  - Relevant conversation history (if needed)
+  - Tool outputs (structured results)
+  - Retrieved RAG chunks (with metadata boundaries)
+-->
+
+### User Request
+<!-- {user_request} -->
+
+### Conversation History (optional)
+<!-- {conversation_history} -->
+
+### Tool Outputs (optional)
+<!-- {tool_outputs} -->
+
+### RAG Context (optional)
+<!--
+{rag_chunks}
+-->
