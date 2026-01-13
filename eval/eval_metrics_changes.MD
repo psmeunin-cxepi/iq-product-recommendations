@@ -1,5 +1,8 @@
 ## High-level summary
 
+First release : custom_metrics_yaml
+Second release: custom_metrics_v2.yaml
+
 Both files define two evaluation metrics—**correctness** and **retrieval_quality**—for judging a Cisco hardware upgrade recommendation assistant on a 1–5 scale. **File-2 (v2)** is a stricter, more RAG-grounded version: it explicitly prioritizes *retrieved “AUTHORITATIVE_SPECS” chunks as the only ground truth* for technical specs and separates “retrieval quality” from “response utilization” more cleanly than File-1.
 
 ---
